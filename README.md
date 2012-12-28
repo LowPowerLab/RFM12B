@@ -30,3 +30,4 @@ See [this tutorial](http://www.ladyada.net/library/arduino/libraries.html) on Ar
 
 ###TODOs:
 - Add support for hosting multiple radios on 1 MCU
+- Support automatic ACK handling
