@@ -28,7 +28,7 @@ char input = 0;
 // Need an instance of the Radio Module
 RFM12B radio;
 byte sendSize=0;
-char payload[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+char payload[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$%^&*(){}[]`|<>?+=:;,.";
 bool requestACK=false;
 
 void setup()
@@ -73,7 +73,7 @@ void loop()
   }
   radio.Sleep();
   
-  sendSize = (sendSize + 1) % 26;
+  sendSize = (sendSize + 1) % 88;
   Serial.println();
   delay(interPacketDelay);
 }
