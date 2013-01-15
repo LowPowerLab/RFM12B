@@ -113,6 +113,7 @@ void RFM12B::XFER(uint16_t cmd) {
 // - lowVoltageThreshold [optional - default = RF12_2v75]
 void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t txPower, uint8_t airKbps, uint8_t lowVoltageThreshold)
 {
+  while(millis()<60);
   cs_pin = SS_BIT;
   nodeID = ID;
   networkID = networkid;
