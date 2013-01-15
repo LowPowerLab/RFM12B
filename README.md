@@ -9,9 +9,9 @@ http://opensource.org/licenses/mit-license.php
 ###Features:
 - easy API with a few simple functions for basic usage
 - 127 possible nodes on 256 possible networks
-- 66 bytes max message length (64 with encryption ON)
+- 128 bytes max message length
 - customizable transmit power (8 levels) for low-power transmission control
-- customizable air-Kbps rate
+- customizable air-Kbps rate allows fine tuning the transmission reliability vs speed (transmitting slower is more reliable but takes more time which implies more power usage)
 - Sleep/Wakeup functionality for power saving
 - Low battery detector with customizable low voltage threshold
 - Interrupt driven
