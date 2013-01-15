@@ -19,7 +19,6 @@
 
 
 ///RF12 Driver version
-//#define RF12_VERSION       1
 #define OPTIMIZE_SPI       1  // uncomment this to write to the RFM12B @ 8 Mhz
 
 /// RF12 CTL bit mask.
@@ -34,7 +33,7 @@
 //#define RF12_SOURCEID   rf12_hdr & RF12_HDR_MASK
 
 /// RF12 Maximum message size in bytes.
-#define RF12_MAXDATA    66
+#define RF12_MAXDATA    128
 /// Max transmit/receive buffer: 4 header + data + 2 crc bytes
 #define RF_MAX          (RF12_MAXDATA + 6)
 
@@ -118,7 +117,7 @@
   #define SPI_MOSI    5     // PA5, pin 8
   #define SPI_SCK     6     // PA4, pin 9
 #elif defined(__AVR_ATmega32U4__) //Arduino Leonardo 
-  #define RFM_IRQ     0      // PD0, INT0, Digital3 
+  #define RFM_IRQ     0	    // PD0, INT0, Digital3 
   #define SS_DDR      DDRB
   #define SS_PORT     PORTB
   #define SS_BIT      6	    // Dig10, PB6
@@ -169,7 +168,7 @@ class RFM12B
   static uint32_t cryptKey[4];              // encryption key to use
   static long rf12_seq;                     // seq number of encrypted packet (or -1)
   static uint8_t cs_pin;                    // chip select pin
-  void (*crypter)(bool);                 // does en-/decryption (null if disabled)
+  void (*crypter)(bool);                    // does en-/decryption (null if disabled)
   static uint8_t Byte(uint8_t out);
   static uint16_t XFERSlow(uint16_t cmd);
   static void XFER(uint16_t cmd);
@@ -196,7 +195,6 @@ class RFM12B
     
     void SendStart(uint8_t toNodeId, bool requestACK=false, bool sendACK=false);
     void SendStart(uint8_t toNodeId, const void* sendBuf, uint8_t sendLen, bool requestACK=false, bool sendACK=false, uint8_t waitMode=SLEEP_MODE_STANDBY);
-    //void SendStart(uint8_t toNodeId, const void* sendBuf, uint8_t sendLen, bool requestACK, uint8_t waitMode=SLEEP_MODE_STANDBY);
     void SendACK(const void* sendBuf = "", uint8_t sendLen=0, uint8_t waitMode=SLEEP_MODE_IDLE);
     void Send(uint8_t toNodeId, const void* sendBuf, uint8_t sendLen, bool requestACK = false, uint8_t waitMode=SLEEP_MODE_STANDBY);
     void SendWait(uint8_t waitMode=0);
