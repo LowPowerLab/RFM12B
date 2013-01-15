@@ -35,6 +35,7 @@ void loop()
   {
     if (radio.CRCPass())
     {
+      Serial.print('[');Serial.print(radio.GetSender());Serial.print("] ");
       for (byte i = 0; i < *radio.DataLen; i++) //can also use radio.GetDataLen() if you don't like pointers
         Serial.print((char)radio.Data[i]);
 
