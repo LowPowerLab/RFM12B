@@ -31,6 +31,7 @@ See [this tutorial](http://www.ladyada.net/library/arduino/libraries.html) on Ar
 - [Receiver](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Receive/Receive.ino)
 
 
-###TODOs:
-- Add support for hosting multiple radios on 1 MCU
+###TODOs (in order of priority):
+- wireless node programming
 - Support automatic ACK handling
+- Add support for hosting multiple radios on 1 MCU
