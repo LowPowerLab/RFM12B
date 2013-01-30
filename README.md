@@ -24,7 +24,7 @@ Copy the content of this library in the "Arduino/libraries/RFM12B" folder.
 <br />
 To find your Arduino folder go to File>Preferences in the Arduino IDE.
 <br/>
-See [this tutorial](http://www.ladyada.net/library/arduino/libraries.html) on Arduino libraries.
+See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques/arduino-libraries) on Arduino libraries.
 
 ###Saple usage
 - [Sender](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Send/Send.ino)
