@@ -32,6 +32,6 @@ See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques
 
 
 ###TODOs (in order of priority):
-- wireless node programming
+- wireless node programming (almost done, for more info click [here](http://lowpowerlab.com/?p=643) and [here](http://lowpowerlab.com/?p=669))
 - Support automatic ACK handling
 - Add support for hosting multiple radios on 1 MCU
