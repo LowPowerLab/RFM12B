@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2013 by Felix Rusu <felix@lowpowerlab.com>
+ *
+ * This file is free software; you can redistribute it and/or modify
+ * it under the terms of either the GNU General Public License version 2
+ * or the GNU Lesser General Public License version 2.1, both as
+ * published by the Free Software Foundation.
+ */
+ 
 // This is a NODE sketch (LEDControl_Node) for a Moteino that can act as
 // a endpoint which blinks/pulses/stops the onboard LEDs per requests from Moteino(s)
 // loaded with GATEWAY sketches (LEDControl_Gateway)
