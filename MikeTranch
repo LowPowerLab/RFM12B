@@ -1,0 +1,2 @@
+Deprecate SetCS()
+Add new Initialize() with one more argument, CS, default 10
