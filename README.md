@@ -29,6 +29,7 @@ See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques
 ###Saple usage
 - [Sender](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Send/Send.ino)
 - [Receiver](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Receive/Receive.ino)
+- More examples in the [Exameples folder](https://github.com/LowPowerLab/RFM12B/tree/master/Examples)
 
 
 ###TODOs (in order of priority):
