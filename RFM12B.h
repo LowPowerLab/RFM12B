@@ -3,6 +3,11 @@
 // 2012-12-12 (C) felix@lowpowerlab.com
 // Based on the RFM12 driver from jeelabs.com (2009-02-09 <jc@wippler.nl>)
 
+// modified by Mike T to support CS on pin 8 or 9
+// SetCS() is now private
+// use Initialize() and add optional CS argument to the end
+
+
 #ifndef RFM12B_h
 #define RFM12B_h
 
@@ -173,6 +178,7 @@ class RFM12B
   static uint16_t XFERSlow(uint16_t cmd);
   static void XFER(uint16_t cmd);
   static void InterruptHandler();
+  void SetCS(uint8_t pin);
   void SPIInit();
   
 	public:
@@ -186,8 +192,10 @@ class RFM12B
     volatile uint8_t* DataLen;
     
     //Defaults: Group: 0xAA=170, transmit power: 0(max), KBPS: 38.3Kbps (air transmission baud - has to be same on all radios in same group)
-  	void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x08, uint8_t lowVoltageThreshold=RF12_2v75);
-    void SetCS(uint8_t pin);
+    //void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x08, uint8_t lowVoltageThreshold=RF12_2v75);
+	//added optional CS, default 10
+    void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x08, uint8_t lowVoltageThreshold=RF12_2v75, uint8_t CS=10);
+    //void SetCS(uint8_t pin);
     void ReceiveStart();
     bool ReceiveComplete();
     bool CanSend();

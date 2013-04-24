@@ -3,6 +3,10 @@
 // 2012-12-12 (C) felix@lowpowerlab.com
 // Based on the RFM12 driver from jeelabs.com (2009-02-09 <jc@wippler.nl>)
 
+// modified by Mike T to support CS on pin 8 or 9
+// SetCS() now private
+// use Initialize() and add optional CS argument to the end
+
 #include "RFM12B.h"
 
 uint8_t RFM12B::cs_pin;                // CS pin for SPI
@@ -111,10 +115,16 @@ void RFM12B::XFER(uint16_t cmd) {
 // - txPower [optional - default = 0 (max)] (7 is min value)
 // - AirKbps [optional - default = 38.31Kbps]
 // - lowVoltageThreshold [optional - default = RF12_2v75]
-void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t txPower, uint8_t airKbps, uint8_t lowVoltageThreshold)
+// - CS [optional - default 10]
+
+//void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t txPower, uint8_t airKbps, uint8_t lowVoltageThreshold)
+
+void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t txPower, uint8_t airKbps, uint8_t lowVoltageThreshold, uint8_t CS)
 {
   while(millis()<60);
-  cs_pin = SS_BIT;
+  //cs_pin = SS_BIT;
+  pinMode(CS, OUTPUT);
+  SetCS(CS);
   nodeID = ID;
   networkID = networkid;
   SPIInit();
