@@ -1,0 +1,87 @@
+#######################################
+# Syntax Coloring Map for RFM12B
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+Initialize  KEYWORD2
+SetCS	KEYWORD2
+Control	KEYWORD2
+ReceiveStart	KEYWORD2
+ReceiveComplete	KEYWORD2
+CanSend	KEYWORD2
+SendStart	KEYWORD2
+SendACK	KEYWORD2
+SendWait	KEYWORD2
+Send	KEYWORD2
+OnOff	KEYWORD2
+Sleep	KEYWORD2
+Wakeup	KEYWORD2
+LowBattery	KEYWORD2
+CryptFunction	KEYWORD2
+Encrypt	KEYWORD2
+CRCPass	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+RFM12B	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+RF12_VERSION	LITERAL1
+RF12_HDR_CTL	LITERAL1
+RF12_HDR_DST	LITERAL1
+RF12_HDR_ACK	LITERAL1
+RF12_HDR_MASK	LITERAL1
+RF12_MAXDATA	LITERAL1
+RF12_433MHZ	LITERAL1
+RF12_868MHZ	LITERAL1
+RF12_915MHZ	LITERAL1
+RF12_EEPROM_ADDR	LITERAL1
+RF12_EEPROM_SIZE	LITERAL1
+RF12_EEPROM_EKEY	LITERAL1
+RF12_EEPROM_ELEN	LITERAL1
+RF12_SLEEP	LITERAL1
+RF12_WAKEUP	LITERAL1
+RF12_DATA_RATE_9	LITERAL1
+RF12_DATA_RATE_8	LITERAL1
+RF12_DATA_RATE_7	LITERAL1
+RF12_DATA_RATE_6	LITERAL1
+RF12_DATA_RATE_5	LITERAL1
+RF12_DATA_RATE_4	LITERAL1
+RF12_DATA_RATE_3	LITERAL1
+RF12_DATA_RATE_2	LITERAL1
+RF12_DATA_RATE_1	LITERAL1
+RF12_2v25	LITERAL1
+RF12_2v55	LITERAL1
+RF12_2v65	LITERAL1
+RF12_2v75	LITERAL1
+RF12_3v05	LITERAL1
+RF12_3v15	LITERAL1
+RF12_3v25	LITERAL1
+#######################################
+# Macros (LITERAL2)
+#######################################
+RF12_WANTS_ACK	LITERAL1
+RF12_ACK_REPLY	LITERAL1
+
+#######################################
+# Variables (LITERAL2)
+#######################################
+rf12_buf	LITERAL2
+rf12_grp	LITERAL2
+rf12_hdr	LITERAL2
+rf12_len	LITERAL2
+rf12_data	LITERAL2
+rf12_crc	LITERAL2
+rf12_seq	LITERAL2
+
+groupID	LITERAL2
+nodeID	LITERAL2
