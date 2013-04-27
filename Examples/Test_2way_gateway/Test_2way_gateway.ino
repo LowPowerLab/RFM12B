@@ -9,7 +9,7 @@
 #define SERIAL_BAUD 115200
 #define NODEID            1                 // network ID used for this unit
 #define NETWORKID        50
-#define FREQUENCY  RF12_915MHZ //Match this with the version of your Moteino! (others: RF12_433MHZ, RF12_915MHZ)
+#define FREQUENCY  RF12_433MHZ //Match this with the version of your Moteino! (others: RF12_433MHZ, RF12_915MHZ)
 #define KEY  "ABCDABCDABCDABCD" //encryption key
 #define ACK_TIME         50  // # of ms to wait for an ack
 
