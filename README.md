@@ -18,6 +18,7 @@ http://opensource.org/licenses/mit-license.php
 - Support for targeted ACK instead of broadcasted ACK (possible because of the new source byte in the header)
 encryption with XXTEA algorithm by David Wheeler, adapted from http://en.wikipedia.org/wiki/XXTEA
 Support for these chips: ATMega8 family (ATmega168, ATMega328) ATMega2560, ATMega1280, ATMega644P, ATTiny84, ATTiny44, ATMega32u4. So far only tested on ATMega 328/P
+- wireless programming (for more info click [here](http://lowpowerlab.com/blog/2013/04/18/moteino-wireless-programming-source-code/), [here](http://lowpowerlab.com/?p=643) and [here](http://lowpowerlab.com/?p=669))
 
 ###Installation
 Copy the content of this library in the "Arduino/libraries/RFM12B" folder.
@@ -33,6 +34,6 @@ See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques
 
 
 ###TODOs (in order of priority):
-- wireless node programming (almost done, for more info click [here](http://lowpowerlab.com/?p=643) and [here](http://lowpowerlab.com/?p=669))
 - Support automatic ACK handling
+- Refactor changing the SPI CS signal
 - Add support for hosting multiple radios on 1 MCU
