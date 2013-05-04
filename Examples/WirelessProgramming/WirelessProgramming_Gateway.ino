@@ -52,29 +52,9 @@ void loop(){
       Serial.println(buffer);
       HandleOutgoingFlashData();
     }
-    if (c == 't')
-    {
-      byte b = sprintf(buffer, "FLX:%d:", 120);
-      Serial.print("FLX:120:  ");
-      Serial.print(b);
-    }
   }
   else if (inputLen == 4 && input[0]=='F' && input[1]=='L' && input[2]=='X' && input[3]=='?') {
     CheckForSerialHEX((byte*)input, inputLen, radio, TARGET_ID, TIMEOUT, ACK_TIME, true);
-    
-    /*
-    if (HandleHandshake())
-    {
-      Serial.println("FLX?OK");
-      if (HandleIncomingSerialData())
-      {
-        Serial.println("FLX?OK");
-        Serial.println("FLASH IMG TRANSMISSION SUCCESS");
-      }
-      else
-        Serial.println("FLASH IMG TRANSMISSION FAIL");
-    }
-    */
   }
   else if (inputLen>0) { //just echo back
     Serial.print("RECEIVED > ");Serial.println(input);
