@@ -24,6 +24,7 @@ SERIALPORT = "COM102"  # the default com/serial port the receiver is connected t
 BAUDRATE = 115200      # default baud rate we talk to Moteino
 DEBUG = False
 HEX = "flash.hex"
+retries = 2
 
 # Read command line arguments
 if (sys.argv and len(sys.argv) > 1):
@@ -46,7 +47,7 @@ if (sys.argv and len(sys.argv) > 1):
       HEX = sys.argv[i+1]
 
 # open up the FTDI serial port to get data transmitted to Moteino
-ser = serial.Serial(SERIALPORT, BAUDRATE, timeout=0) #timeout=0 means nonblocking
+ser = serial.Serial(SERIALPORT, BAUDRATE, timeout=1) #timeout=0 means nonblocking
 time.sleep(1) #wait for Moteino reset after port open
 
 def millis():
@@ -59,9 +60,9 @@ def waitForHandshake(isEOF=False):
     if millis()-now < 5000:
       count += 1
       if isEOF:
-        ser.write("FLX?EOF")
-      else: ser.write("FLX?")
-      time.sleep(.1)
+        ser.write("FLX?EOF" + '\n')
+      else: ser.write("FLX?" + '\n')
+      ser.flush()
       rx = ser.readline().rstrip()
       if len(rx) > 0:
         print "Moteino: [" + rx + "]"
@@ -76,7 +77,6 @@ def waitForSEQ(seq):
   now = millis()
   while True:
     if millis()-now < 3000:
-      time.sleep(.05)
       rx = ser.readline()
       if len(rx) > 0:
         rx = rx.strip()
@@ -105,7 +105,7 @@ if __name__ == "__main__":
           
           if isEOF==False:
             print "TX > " + tx
-            ser.write(tx)
+            ser.write(tx + '\n')
             result = waitForSEQ(seq)
           elif waitForHandshake(True):
             print "SUCCESS!"
@@ -114,8 +114,13 @@ if __name__ == "__main__":
           if result == 1: seq+=1
           elif result == 2: continue # out of synch, retry
           else:
-            print "TIMEOUT, aborting..."
-            break;
+            if retries > 0:
+              retries-=1
+              print "Timeout, retry...\n"
+              continue
+            else:
+              print "TIMEOUT, aborting..."
+              break;
 
         while 1:
           rx = ser.readline()
