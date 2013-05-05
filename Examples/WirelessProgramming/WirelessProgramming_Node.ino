@@ -17,7 +17,6 @@
 // is handled by the SPIFLash/WirelessHEX library, which also relies on the RFM12B library
 // These libraries and custom 1k Optiboot bootloader are at: http://github.com/lowpowerlab
 
-#include <SPIFlash.h>
 #include <RFM12B.h>
 #include <SPI.h>
 #include <avr/wdt.h>
@@ -45,16 +44,16 @@ void setup(){
   Serial.begin(SERIAL_BAUD);
   radio.Initialize(MYID, RF12_915MHZ, GROUPID);
 
-  delay(1000);
   Serial.print("Start...");
   
   if (flash.initialize())
-    Serial.println("Init OK!");
+    Serial.println("SPI Flash Init OK!");
   else
-    Serial.println("Init FAIL!");
+    Serial.println("SPI Flash Init FAIL!");
 }
 
 void loop(){
+  /*
   // This part is optional.
   // Handle serial input (to allow basic DEBUGGING of FLASH chip)
   // ie: display first 256 bytes in FLASH, erase chip, write bytes at first 10 positions, etc
@@ -95,6 +94,7 @@ void loop(){
       flash.writeByte(input-48, millis()%2 ? 0xaa : 0xbb);
     }
   }
+  */
   
   // Check for existing RF data, potentially for a new sketch wireless upload
   // For this to work this check has to be done often enough to be
