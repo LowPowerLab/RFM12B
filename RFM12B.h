@@ -98,7 +98,7 @@
   #define SPI_MOSI    51    // PB2, pin 21
   #define SPI_MISO    50    // PB3, pin 22
   #define SPI_SCK     52    // PB1, pin 20
-#elif defined(__AVR_ATmega644P__)
+#elif defined(__AVR_ATmega644P__)  || defined(__AVR_ATmega1284P__)
   #define RFM_IRQ     10
   #define SS_DDR      DDRB
   #define SS_PORT     PORTB
