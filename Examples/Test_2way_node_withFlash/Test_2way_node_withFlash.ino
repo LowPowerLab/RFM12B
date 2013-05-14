@@ -10,7 +10,7 @@
 #define MYID        123       // node ID used for this unit
 #define NETWORKID   100
 #define GATEWAYID     1
-#define FREQUENCY  RF12_915MHZ //Match this with the version of your Moteino! (others: RF12_433MHZ, RF12_915MHZ)
+#define FREQUENCY  RF12_433MHZ //Match this with the version of your Moteino! (others: RF12_433MHZ, RF12_915MHZ)
 #define KEY  "ABCDABCDABCDABCD"
 int TRANSMITPERIOD = 500; //transmit a packet to gateway so often (in ms)
 
