@@ -98,7 +98,7 @@
   #define SPI_MOSI    51    // PB2, pin 21
   #define SPI_MISO    50    // PB3, pin 22
   #define SPI_SCK     52    // PB1, pin 20
-#elif defined(__AVR_ATmega644P__)  || defined(__AVR_ATmega1284P__)
+#elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
   #define RFM_IRQ     10
   #define SS_DDR      DDRB
   #define SS_PORT     PORTB
@@ -116,11 +116,12 @@
   #define SPI_MISO    4     // PA6, pin 7
   #define SPI_MOSI    5     // PA5, pin 8
   #define SPI_SCK     6     // PA4, pin 9
-#elif defined(__AVR_ATmega32U4__) //Arduino Leonardo 
+#elif defined(__AVR_ATmega32U4__) //Arduino Leonardo, MoteinoLeo
   #define RFM_IRQ     0	    // PD0, INT0, Digital3 
   #define SS_DDR      DDRB
   #define SS_PORT     PORTB
-  #define SS_BIT      6	    // Dig10, PB6
+  //OLD from Jeelib: #define SS_BIT      6	    // Dig10, PB6
+  #define SS_BIT      0	    // Dig17, PB0
   #define SPI_SS      17    // PB0, pin 8, Digital17
   #define SPI_MISO    14    // PB3, pin 11, Digital14
   #define SPI_MOSI    16    // PB2, pin 10, Digital16
@@ -172,7 +173,7 @@ class RFM12B
   static uint8_t Byte(uint8_t out);
   static uint16_t XFERSlow(uint16_t cmd);
   static void XFER(uint16_t cmd);
-  static void InterruptHandler();
+  
   void SPIInit();
   
 	public:
@@ -184,6 +185,8 @@ class RFM12B
     static const byte DATAMAXLEN;
     volatile uint8_t* Data;
     volatile uint8_t* DataLen;
+    
+    static void InterruptHandler();
     
     //Defaults: Group: 0xAA=170, transmit power: 0(max), KBPS: 38.3Kbps (air transmission baud - has to be same on all radios in same group)
   	void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x08, uint8_t lowVoltageThreshold=RF12_2v75);
