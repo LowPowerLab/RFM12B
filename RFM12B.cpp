@@ -113,7 +113,7 @@ void RFM12B::XFER(uint16_t cmd) {
 // - lowVoltageThreshold [optional - default = RF12_2v75]
 void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t txPower, uint8_t airKbps, uint8_t lowVoltageThreshold)
 {
-  while(millis()<60);
+  //while(millis()<60); /* this is needed on early R1 revisions that don't provision for this delay in the fuses */
   cs_pin = SS_BIT;
   nodeID = ID;
   networkID = networkid;
@@ -174,7 +174,7 @@ void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t
   #endif
 #else
   if (nodeID != 0)
-    attachInterrupt(0, InterruptHandler, LOW);
+    attachInterrupt(0, RFM12B::InterruptHandler, LOW);
   else
     detachInterrupt(0);
 #endif
@@ -239,17 +239,17 @@ void RFM12B::InterruptHandler() {
   #if RFM_IRQ < 8
     ISR(PCINT2_vect) {
       while (!bitRead(PIND, RFM_IRQ))
-        InterruptHandler();
+        RFM12B::InterruptHandler();
     }
   #elif RFM_IRQ < 14
     ISR(PCINT0_vect) {
       while (!bitRead(PINB, RFM_IRQ - 8))
-        InterruptHandler();
+        RFM12B::InterruptHandler();
     }
   #else
     ISR(PCINT1_vect) {
       while (!bitRead(PINC, RFM_IRQ - 14))
-        InterruptHandler();
+        RFM12B::InterruptHandler();
     }
   #endif
 #endif
