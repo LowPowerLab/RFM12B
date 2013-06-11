@@ -44,6 +44,8 @@ void RFM12B::SPIInit() {
 #endif    
   pinMode(RFM_IRQ, INPUT);
   digitalWrite(RFM_IRQ, 1); // pull-up
+
+  receivedata = NULL; // receivedata callback function set to NULL 
 }
 
 uint8_t RFM12B::Byte(uint8_t out) {
@@ -225,7 +227,8 @@ void RFM12B::InterruptHandler() {
           case TXSYN2: out = networkID; rxstate = -(3 + rf12_len); break;
           case TXCRC1: out = rf12_crc; break;
           case TXCRC2: out = rf12_crc >> 8; break;
-          case TXDONE: XFER(RF_IDLE_MODE); // fall through
+          case TXDONE: XFER(RF_IDLE_MODE); out = 0xAA; break; // fall through
+    case TXIDLE: ReceiveStart(); return; break;  // Restart Receive hardware when done
           default:     out = 0xAA;
         }
         
@@ -263,6 +266,12 @@ void RFM12B::ReceiveStart() {
   XFER(RF_RECEIVER_ON);
 }
 
+void RFM12B::ReceiveCallBack(void (*receivefunction)(void)) {
+
+	receivedata = receivefunction;
+}
+	
+
 bool RFM12B::ReceiveComplete() {
   if (rxstate == TXRECV && (rxfill >= rf12_len + 6 || rxfill >= RF_MAX)) {
     rxstate = TXIDLE;
@@ -273,6 +282,10 @@ bool RFM12B::ReceiveComplete() {
         crypter(false);
       else
         rf12_seq = -1;
+
+      if (receivedata !=NULL) // Callback function if defined
+	receivedata();
+
       return true; // it's a broadcast packet or it's addressed to this node
     }
   }
@@ -309,7 +322,8 @@ void RFM12B::SendStart(uint8_t toNodeID, const void* sendBuf, uint8_t sendLen, b
   rf12_len = sendLen;
   memcpy((void*) rf12_data, sendBuf, sendLen);
   SendStart(toNodeID, requestACK, sendACK);
-  SendWait(waitMode);
+  if (waitMode)
+	  SendWait(waitMode);
 }
 
 /// Should be called immediately after reception in case sender wants ACK
