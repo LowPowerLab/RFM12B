@@ -170,6 +170,7 @@ class RFM12B
   static long rf12_seq;                     // seq number of encrypted packet (or -1)
   static uint8_t cs_pin;                    // chip select pin
   void (*crypter)(bool);                    // does en-/decryption (null if disabled)
+  void (*receivedata)(void);         // Receive callback function
   static uint8_t Byte(uint8_t out);
   static uint16_t XFERSlow(uint16_t cmd);
   static void XFER(uint16_t cmd);
@@ -191,10 +192,11 @@ class RFM12B
     //Defaults: Group: 0xAA=170, transmit power: 0(max), KBPS: 38.3Kbps (air transmission baud - has to be same on all radios in same group)
   	void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x08, uint8_t lowVoltageThreshold=RF12_2v75);
     void SetCS(uint8_t pin);
-    void ReceiveStart();
+    static void ReceiveStart();
     bool ReceiveComplete();
     bool CanSend();
     uint16_t Control(uint16_t cmd);
+    void ReceiveCallBack(void (*receivefunction)(void)); 
     
     void SendStart(uint8_t toNodeId, bool requestACK=false, bool sendACK=false);
     void SendStart(uint8_t toNodeId, const void* sendBuf, uint8_t sendLen, bool requestACK=false, bool sendACK=false, uint8_t waitMode=SLEEP_MODE_STANDBY);
