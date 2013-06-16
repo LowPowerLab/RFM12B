@@ -113,7 +113,7 @@ void RFM12B::XFER(uint16_t cmd) {
 // - lowVoltageThreshold [optional - default = RF12_2v75]
 void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t txPower, uint8_t airKbps, uint8_t lowVoltageThreshold)
 {
-  //while(millis()<60); /* this is needed on early R1 revisions that don't provision for this delay in the fuses */
+  //while(millis()<60);
   cs_pin = SS_BIT;
   nodeID = ID;
   networkID = networkid;
@@ -436,11 +436,11 @@ void RFM12B::CryptFunction(bool sending) {
   }
 }
 
-void RFM12B::Encrypt(const uint8_t* key) {
+void RFM12B::Encrypt(const uint8_t* key, uint8_t keyLen) {
   // by using a pointer to CryptFunction, we only link it in when actually used
   if (key != 0) {
-    for (uint8_t i = 0; i < sizeof cryptKey; ++i)
-      ((uint8_t*) cryptKey)[i] = key[i]; //eeprom_read_byte(key + i);
+    for (uint8_t i = 0; i < keyLen; ++i)
+      ((uint8_t*) cryptKey)[i] = key[i];
     crypter = CryptFunction;
   } else crypter = 0;
 }
