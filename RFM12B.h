@@ -216,7 +216,7 @@ class RFM12B
     bool ACKRequested();
     bool ACKReceived(uint8_t fromNodeID=0);
     static void CryptFunction(bool sending);
-    void Encrypt(const uint8_t* key);
+    void Encrypt(const uint8_t* key, uint8_t keyLen = 16);
     bool CRCPass() { return rf12_crc == 0; }
 };
 
