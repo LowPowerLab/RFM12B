@@ -15,6 +15,7 @@ Control	KEYWORD2
 ReceiveStart	KEYWORD2
 ReceiveComplete	KEYWORD2
 CanSend	KEYWORD2
+ClearToSend	KEYWORD2
 SendStart	KEYWORD2
 SendACK	KEYWORD2
 SendWait	KEYWORD2

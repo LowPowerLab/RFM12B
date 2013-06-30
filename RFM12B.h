@@ -195,6 +195,7 @@ class RFM12B
     static void ReceiveStart();
     bool ReceiveComplete();
     bool CanSend();
+    bool ClearToSend();
     uint16_t Control(uint16_t cmd);
     void ReceiveCallBack(void (*receivefunction)(void)); 
     

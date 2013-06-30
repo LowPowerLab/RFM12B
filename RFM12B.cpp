@@ -308,6 +308,16 @@ bool RFM12B::CanSend() {
   return false;
 }
 
+bool RFM12B::ClearToSend() {
+  // no need to test with interrupts disabled: state TXRECV is only reached
+  // outside of ISR and we don't care if rxfill jumps from 0 to 1 here
+  if (rxstate == TXRECV && rxfill == 0 && (Byte(0x00) & (RF_RSSI_BIT >> 8)) == 0) {
+    return true;
+  }
+  return false;
+}
+
+
 void RFM12B::SendStart(uint8_t toNodeID, bool requestACK, bool sendACK) {
   rf12_hdr1 = toNodeID | (sendACK ? RF12_HDR_ACKCTLMASK : 0);
   rf12_hdr2 = nodeID | (requestACK ? RF12_HDR_ACKCTLMASK : 0);
