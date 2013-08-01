@@ -19,6 +19,7 @@ http://opensource.org/licenses/mit-license.php
 encryption with XXTEA algorithm by David Wheeler, adapted from http://en.wikipedia.org/wiki/XXTEA
 Support for these chips: ATMega8 family (ATmega168, ATMega328) ATMega2560, ATMega1280, ATMega644P, ATTiny84, ATTiny44, ATMega32u4. So far only tested on ATMega 328/P
 - wireless programming (for more info click [here](http://lowpowerlab.com/blog/2013/04/18/moteino-wireless-programming-source-code/), [here](http://lowpowerlab.com/?p=643) and [here](http://lowpowerlab.com/?p=669))
+- the library needed for wireless programming is now [here](https://github.com/LowPowerLab/WirelessProgramming), install it in your Arduino/libraries folder (WirelessHEX for RFM12B)
 
 ###Installation
 Copy the content of this library in the "Arduino/libraries/RFM12B" folder.
@@ -30,7 +31,7 @@ See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques
 ###Saple usage
 - [Sender](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Send/Send.ino)
 - [Receiver](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Receive/Receive.ino)
-- More examples in the [Exameples folder](https://github.com/LowPowerLab/RFM12B/tree/master/Examples)
+- More examples in the [Examples folder](https://github.com/LowPowerLab/RFM12B/tree/master/Examples)
 
 
 ###TODOs (in order of priority):
