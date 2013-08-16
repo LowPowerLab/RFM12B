@@ -20,6 +20,7 @@
 
 #include <RFM12B.h>
 #include <SPI.h>
+#include <SPIFlash.h>
 #include <WirelessHEX.h>
 
 #define MYID               1       // node ID used for this unit
