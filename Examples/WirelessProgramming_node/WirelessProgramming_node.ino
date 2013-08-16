@@ -19,6 +19,7 @@
 
 #include <RFM12B.h>
 #include <SPI.h>
+#include <SPIFlash.h>
 #include <avr/wdt.h>
 #include <WirelessHEX.h>
 
@@ -38,7 +39,7 @@ long lastPeriod = -1;
 // MANUFACTURER_ID - OPTIONAL, 0x1F44 for adesto(ex atmel) 4mbit flash
 //                             0xEF30 for windbond 4mbit flash
 //////////////////////////////////////////
-SPIFlash flash(8, 0x1F44);
+SPIFlash flash(8, 0xEF30); //windbond 4mbit flash chip
 
 void setup(){
   Serial.begin(SERIAL_BAUD);
