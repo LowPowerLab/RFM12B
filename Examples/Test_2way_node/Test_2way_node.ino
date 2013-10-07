@@ -3,8 +3,6 @@
 // It will respond to any ACKed messages from the master
 // Every 3rd message will also be ACKed (request ACK from master).
 #include <RFM12B.h>
-#include <SPIFlash.h>
-#include <SPI.h>
 #include <avr/sleep.h>
 
 #define MYID         111       // node ID used for this unit
