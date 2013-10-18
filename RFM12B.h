@@ -6,6 +6,8 @@
 #ifndef RFM12B_h
 #define RFM12B_h
 
+#define RF69_COMPAT 1
+
 #include <inttypes.h>
 #include <avr/io.h>
 #include <util/crc16.h>
@@ -64,6 +66,8 @@
 #define RF12_SLEEP   0
 #define RF12_WAKEUP -1
 
+#if !defined(RF69_COMPAT)
+
 /// Shorthand for RF12 group byte in rf12_buf.
 #define rf12_grp        rf12_buf[0]
 /// pointer to 1st header byte in rf12_buf (CTL + DESTINATIONID)
@@ -75,6 +79,20 @@
 #define rf12_len        rf12_buf[3]
 /// Shorthand for first RF12 data byte in rf12_buf.
 #define rf12_data       (rf12_buf + 4)
+#else
+/// Shorthand for RF12 group byte in rf12_buf.
+#define rf12_grp        rf12_buf[0]
+/// pointer to 1st header byte in rf12_buf (CTL + DESTINATIONID)
+#define rf12_hdr1        rf12_buf[2]
+/// pointer to 2nd header byte in rf12_buf (ACK + SOURCEID)
+#define rf12_hdr2        rf12_buf[3]
+
+/// Shorthand for RF12 length byte in rf12_buf
+#define rf12_len        rf12_buf[1]
+/// Shorthand for first RF12 data byte in rf12_buf.
+#define rf12_data       (rf12_buf + 4)
+
+#endif
 
 
 // pin change interrupts are currently only supported on ATmega328's
@@ -178,7 +196,7 @@ class RFM12B
   
 	public:
     //constructor
-    RFM12B():Data(rf12_data),DataLen(&rf12_buf[3]){}
+    RFM12B():Data(rf12_data),DataLen(&rf12_len){}
 
     static uint8_t networkID;         // network group
     static uint8_t nodeID;            // address of this node
@@ -215,7 +233,12 @@ class RFM12B
     bool ACKReceived(uint8_t fromNodeID=0);
     static void CryptFunction(bool sending);
     void Encrypt(const uint8_t* key, uint8_t keyLen = 16);
+#if !defined(RF69_COMPAT)
     bool CRCPass() { return rf12_crc == 0; }
+#else
+    bool CRCPass() { return rf12_crc == 0x1d0f; }
+#endif
+    bool ReceiveStarted() { return rxstate == TXRECV && rxfill > 0; }
 };
 
 #endif

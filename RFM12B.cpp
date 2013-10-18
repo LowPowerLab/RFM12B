@@ -5,6 +5,12 @@
 
 #include "RFM12B.h"
 
+#if !defined(RF69_COMPAT)
+#define CRC16(A,B)  _crc16_update(A,B)
+#else
+#define CRC16(A,B)  _crc_xmodem_update(A,B)
+#endif
+
 uint8_t RFM12B::cs_pin;                // CS pin for SPI
 uint8_t RFM12B::nodeID;                // address of this node
 uint8_t RFM12B::networkID;             // network group ID
@@ -127,7 +133,23 @@ void RFM12B::Initialize(uint8_t ID, uint8_t freqBand, uint8_t networkid, uint8_t
     XFER(0x0000);
       
   XFER(0x80C7 | (freqBand << 4)); // EL (ena TX), EF (ena RX FIFO), 12.0pF 
+#if !defined(RF69_COMPAT)
   XFER(0xA640); // Frequency is exactly 434/868/915MHz (whatever freqBand is)
+#else
+  switch (freqBand) // Frequency is exactly 433/868/915Mhz
+  {
+    case RF12_433MHZ:
+      XFER(0xA4B0);
+      break;
+    case RF12_915MHZ:
+      XFER(0xA7D0);
+      break;
+    case RF12_868MHZ:
+    default:
+      XFER(0xA640);
+      break;
+  }
+#endif
   XFER(0xC600 + airKbps);   //Air transmission baud rate: 0x08= ~38.31Kbps
   XFER(0x94A2);             // VDI,FAST,134kHz,0dBm,-91dBm 
   XFER(0xC2AC);             // AL,!ml,DIG,DQD4 
@@ -208,23 +230,37 @@ void RFM12B::InterruptHandler() {
 
     //Serial.print(out, HEX); Serial.print(' ');
     rf12_buf[rxfill++] = in;
-    rf12_crc = _crc16_update(rf12_crc, in);
+    rf12_crc = CRC16(rf12_crc, in);
 
+#if !defined(RF69_COMPAT)
     if (rxfill >= rf12_len + 6 || rxfill >= RF_MAX)
+#else
+    if (rxfill >= rf12_len + 4 || rxfill >= RF_MAX)
+#endif
       XFER(RF_IDLE_MODE);
   } else {
     uint8_t out;
 
       if (rxstate < 0) {
+#if !defined(RF69_COMPAT)
         uint8_t pos = 4 + rf12_len + rxstate++;
+#else
+        uint8_t pos = 2 + rf12_len + rxstate++;
+#endif
         out = rf12_buf[pos];
-        rf12_crc = _crc16_update(rf12_crc, out);
+        rf12_crc = CRC16(rf12_crc, out);
       } else
         switch (rxstate++) {
           case TXSYN1: out = 0x2D; break;
+#if !defined(RF69_COMPAT)
           case TXSYN2: out = networkID; rxstate = -(3 + rf12_len); break;
           case TXCRC1: out = rf12_crc; break;
           case TXCRC2: out = rf12_crc >> 8; break;
+#else
+          case TXSYN2: out = networkID; rxstate = -(1 + rf12_len); break;
+          case TXCRC1: out = ~rf12_crc >> 8; break;
+          case TXCRC2: out = ~rf12_crc; break;
+#endif
           case TXDONE: XFER(RF_IDLE_MODE); // fall through
           default:     out = 0xAA;
         }
@@ -256,15 +292,23 @@ void RFM12B::InterruptHandler() {
 
 void RFM12B::ReceiveStart() {
   rxfill = rf12_len = 0;
+#if !defined(RF69_COMPAT)
   rf12_crc = ~0;
   if (networkID != 0)
-    rf12_crc = _crc16_update(~0, networkID);
+    rf12_crc = CRC16(~0, networkID);
+#else
+  rf12_crc = 0x1d0f;
+#endif
   rxstate = TXRECV;
   XFER(RF_RECEIVER_ON);
 }
 
 bool RFM12B::ReceiveComplete() {
+#if !defined(RF69_COMPAT)
   if (rxstate == TXRECV && (rxfill >= rf12_len + 6 || rxfill >= RF_MAX)) {
+#else
+  if (rxstate == TXRECV && (rxfill >= rf12_len + 4 || rxfill >= RF_MAX)) {
+#endif
     rxstate = TXIDLE;
     if (rf12_len > RF12_MAXDATA)
       rf12_crc = 1; // force bad crc if packet length is invalid
@@ -299,14 +343,21 @@ void RFM12B::SendStart(uint8_t toNodeID, bool requestACK, bool sendACK) {
   rf12_hdr1 = toNodeID | (sendACK ? RF12_HDR_ACKCTLMASK : 0);
   rf12_hdr2 = nodeID | (requestACK ? RF12_HDR_ACKCTLMASK : 0);
   if (crypter != 0) crypter(true);
+#if !defined(RF69_COMPAT)
   rf12_crc = ~0;
-  rf12_crc = _crc16_update(rf12_crc, networkID);
+  rf12_crc = CRC16(rf12_crc, networkID);
+#else
+  rf12_crc = 0x1d0f;
+#endif
   rxstate = TXPRE1;
   XFER(RF_XMITTER_ON); // bytes will be fed via interrupts
 }
 
 void RFM12B::SendStart(uint8_t toNodeID, const void* sendBuf, uint8_t sendLen, bool requestACK, bool sendACK, uint8_t waitMode) {
   rf12_len = sendLen;
+#if defined(RF69_COMPAT)
+  rf12_len += 2;
+#endif
   memcpy((void*) rf12_data, sendBuf, sendLen);
   SendStart(toNodeID, requestACK, sendACK);
   SendWait(waitMode);
@@ -368,7 +419,11 @@ uint8_t RFM12B::GetSender(){
 }
 
 volatile uint8_t * RFM12B::GetData() { return rf12_data; }
+#if !defined(RF69_COMPAT)
 uint8_t RFM12B::GetDataLen() { return *DataLen; }
+#else
+uint8_t RFM12B::GetDataLen() { return *DataLen - 2; }
+#endif
 bool RFM12B::ACKRequested() { return RF12_WANTS_ACK; }
 
 /// Should be polled immediately after sending a packet with ACK request
