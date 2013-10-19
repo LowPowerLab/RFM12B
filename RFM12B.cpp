@@ -228,7 +228,7 @@ void RFM12B::InterruptHandler() {
     if (rxfill == 0 && networkID != 0)
       rf12_buf[rxfill++] = networkID;
 
-    //Serial.print(out, HEX); Serial.print(' ');
+    //Serial.print(in, HEX); Serial.print(' ');
     rf12_buf[rxfill++] = in;
     rf12_crc = CRC16(rf12_crc, in);
 
@@ -340,13 +340,17 @@ bool RFM12B::CanSend() {
 }
 
 void RFM12B::SendStart(uint8_t toNodeID, bool requestACK, bool sendACK) {
+#if !defined(RF69_COMPAT)
   rf12_hdr1 = toNodeID | (sendACK ? RF12_HDR_ACKCTLMASK : 0);
   rf12_hdr2 = nodeID | (requestACK ? RF12_HDR_ACKCTLMASK : 0);
   if (crypter != 0) crypter(true);
-#if !defined(RF69_COMPAT)
   rf12_crc = ~0;
   rf12_crc = CRC16(rf12_crc, networkID);
 #else
+  rf12_hdr1 = toNodeID;
+  rf12_hdr2 = nodeID;
+  rf12_hdr3 = (sendACK ? 0x40 : 0) | (requestACK ? 0x80 : 0);
+  if (crypter != 0) crypter(true);
   rf12_crc = 0x1d0f;
 #endif
   rxstate = TXPRE1;
@@ -356,7 +360,7 @@ void RFM12B::SendStart(uint8_t toNodeID, bool requestACK, bool sendACK) {
 void RFM12B::SendStart(uint8_t toNodeID, const void* sendBuf, uint8_t sendLen, bool requestACK, bool sendACK, uint8_t waitMode) {
   rf12_len = sendLen;
 #if defined(RF69_COMPAT)
-  rf12_len += 2;
+  rf12_len += 3;
 #endif
   memcpy((void*) rf12_data, sendBuf, sendLen);
   SendStart(toNodeID, requestACK, sendACK);
@@ -422,7 +426,7 @@ volatile uint8_t * RFM12B::GetData() { return rf12_data; }
 #if !defined(RF69_COMPAT)
 uint8_t RFM12B::GetDataLen() { return *DataLen; }
 #else
-uint8_t RFM12B::GetDataLen() { return *DataLen - 2; }
+uint8_t RFM12B::GetDataLen() { return *DataLen - 3; }
 #endif
 bool RFM12B::ACKRequested() { return RF12_WANTS_ACK; }
 
@@ -432,8 +436,13 @@ bool RFM12B::ACKReceived(uint8_t fromNodeID) {
     return CRCPass() &&
            RF12_DESTID == nodeID &&
           (RF12_SOURCEID == fromNodeID || fromNodeID == 0) &&
+#if !defined(RF69_COMPAT)
+          (rf12_hdr3 & 0x40) &&
+          !(rf12_hdr3 & 0x80);
+#else
           (rf12_hdr1 & RF12_HDR_ACKCTLMASK) &&
           !(rf12_hdr2 & RF12_HDR_ACKCTLMASK);
+#endif
   return false;
 }
 

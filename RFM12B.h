@@ -82,15 +82,17 @@
 #else
 /// Shorthand for RF12 group byte in rf12_buf.
 #define rf12_grp        rf12_buf[0]
-/// pointer to 1st header byte in rf12_buf (CTL + DESTINATIONID)
+/// pointer to 1st header byte in rf12_buf (DESTINATIONID)
 #define rf12_hdr1        rf12_buf[2]
-/// pointer to 2nd header byte in rf12_buf (ACK + SOURCEID)
+/// pointer to 2nd header byte in rf12_buf (SOURCEID)
 #define rf12_hdr2        rf12_buf[3]
+/// pointer to 3rd header byte in rf12_bug (CTL + ACK)
+#define rf12_hdr3        rf12_buf[4]
 
 /// Shorthand for RF12 length byte in rf12_buf
 #define rf12_len        rf12_buf[1]
 /// Shorthand for first RF12 data byte in rf12_buf.
-#define rf12_data       (rf12_buf + 4)
+#define rf12_data       (rf12_buf + 5)
 
 #endif
 
@@ -193,6 +195,11 @@ class RFM12B
   static void XFER(uint16_t cmd);
   
   void SPIInit();
+
+#if defined(RF69_COMPAT)
+  volatile uint8_t* Data;
+  volatile uint8_t* DataLen;
+#endif
   
 	public:
     //constructor
@@ -201,8 +208,10 @@ class RFM12B
     static uint8_t networkID;         // network group
     static uint8_t nodeID;            // address of this node
     static const byte DATAMAXLEN;
+#if !defined(RF69_COMPAT) //don't hold the same values in COMPAT mode, so use the accessor functions
     volatile uint8_t* Data;
     volatile uint8_t* DataLen;
+#endif
     
     static void InterruptHandler();
     
