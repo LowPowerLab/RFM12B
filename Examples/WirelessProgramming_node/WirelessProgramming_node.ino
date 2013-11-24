@@ -23,27 +23,35 @@
 #include <avr/wdt.h>
 #include <WirelessHEX.h>
 
-#define MYID       55       // node ID used for this unit
-#define GROUPID   100
+#define MYID        55       // node ID used for this unit
+#define GROUPID     100
 #define GATEWAYID   1
-#define SERIAL_BAUD      115200
-#define ACK_TIME             50  // # of ms to wait for an ack
+//Match frequency to the hardware version of the radio on your Moteino (uncomment one):
+//#define FREQUENCY   RF12_433MHZ
+//#define FREQUENCY   RF12_868MHZ
+#define FREQUENCY   RF12_915MHZ
+#define SERIAL_BAUD 115200
+#define ACK_TIME    50  // # of ms to wait for an ack
+#define LED         9
+#define BLINKPERIOD 800
 
 RFM12B radio;
 char input = 0;
 long lastPeriod = -1;
 
-//////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 // flash(SPI_CS, MANUFACTURER_ID)
 // SPI_CS          - CS pin attached to SPI flash chip (8 in case of Moteino)
 // MANUFACTURER_ID - OPTIONAL, 0x1F44 for adesto(ex atmel) 4mbit flash
 //                             0xEF30 for windbond 4mbit flash
-//////////////////////////////////////////
-SPIFlash flash(8, 0xEF30); //windbond 4mbit flash chip
+//                             0xEF40 for windbond 16/64mbit flash
+//////////////////////////////////////////////////////////////////////////////
+SPIFlash flash(8, 0xEF30); //0xEF30 windbond 4mbit
 
 void setup(){
+  pinMode(LED, OUTPUT);
   Serial.begin(SERIAL_BAUD);
-  radio.Initialize(MYID, RF12_915MHZ, GROUPID);
+  radio.Initialize(MYID, FREQUENCY, GROUPID);
 
   Serial.print("Start...");
   
@@ -119,12 +127,11 @@ void loop(){
   }
   
   ////////////////////////////////////////////////////////////////////////////////////////////
-  // Real sketch code here, let's blink the onboard LED every 0.5sec
-  if ((int)(millis()/500) > lastPeriod)
+  // Real sketch code here, let's blink the onboard LED
+  if ((int)(millis()/BLINKPERIOD) > lastPeriod)
   {
     lastPeriod++;
-    pinMode(9, OUTPUT);
-    digitalWrite(9, lastPeriod%2);
+    digitalWrite(LED, lastPeriod%2);
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
 }

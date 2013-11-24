@@ -17,18 +17,21 @@
 // The handshake protocol that receives the sketch from the serial port 
 // is handled by the SPIFLash/WirelessHEX library, which also relies on the RFM12B library
 // These libraries and custom 1k Optiboot bootloader for the target node are at: http://github.com/lowpowerlab
-
 #include <RFM12B.h>
 #include <SPI.h>
 #include <SPIFlash.h>
 #include <WirelessHEX.h>
 
-#define MYID               1       // node ID used for this unit
-#define TARGET_ID         55      //ID of node being wirelessly reprogrammed
-#define GROUPID          100
-#define SERIAL_BAUD   115200
-#define ACK_TIME          20  // # of ms to wait for an ack
-#define TIMEOUT         3000
+#define MYID        1       // node ID used for this unit
+#define TARGET_ID   55      //ID of node being wirelessly reprogrammed
+#define GROUPID     100
+//Match frequency to the hardware version of the radio on your Moteino (uncomment one):
+//#define FREQUENCY   RF12_433MHZ
+//#define FREQUENCY   RF12_868MHZ
+#define FREQUENCY   RF12_915MHZ
+#define SERIAL_BAUD 115200
+#define ACK_TIME    20  // # of ms to wait for an ack
+#define TIMEOUT     3000
 
 RFM12B radio;
 char c = 0;
@@ -38,7 +41,7 @@ char input[64]; //serial input buffer
 
 void setup(){
   Serial.begin(SERIAL_BAUD);
-  radio.Initialize(MYID, RF12_915MHZ, GROUPID);
+  radio.Initialize(MYID, FREQUENCY, GROUPID);
   Serial.print("Start...");
 }
 
