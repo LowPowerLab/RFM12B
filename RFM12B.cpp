@@ -507,6 +507,9 @@ void RFM12B::CryptFunction(bool sending) {
 void RFM12B::Encrypt(const uint8_t* key, uint8_t keyLen) {
   // by using a pointer to CryptFunction, we only link it in when actually used
   if (key != 0) {
+#if defined(RF69_COMPAT)
+    Serial.println("***** RFM69 compatible encryption not supported ***");
+#endif
     for (uint8_t i = 0; i < keyLen; ++i)
       ((uint8_t*) cryptKey)[i] = key[i];
     crypter = CryptFunction;
