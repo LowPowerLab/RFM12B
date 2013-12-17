@@ -217,7 +217,7 @@ class RFM12B
     static void InterruptHandler();
     
     //Defaults: Group: 0xAA=170, transmit power: 0(max), KBPS: 38.3Kbps (air transmission baud - has to be same on all radios in same group)
-  	void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x08, uint8_t lowVoltageThreshold=RF12_2v75);
+  	void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x7F, uint8_t lowVoltageThreshold=RF12_2v75);
     void SetCS(uint8_t pin);
     void ReceiveStart();
     bool ReceiveComplete();
