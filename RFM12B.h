@@ -7,7 +7,7 @@
 #define RFM12B_h
 
 #define RF69_COMPAT 1
-#define DISABLE_RSSI_CHECK  1
+#define DISABLE_RSSI_CHECK  0
 
 #include <inttypes.h>
 #include <avr/io.h>
