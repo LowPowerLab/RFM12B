@@ -248,7 +248,7 @@ class RFM12B
 #else
     bool CRCPass() { return rf12_crc == 0x1d0f; }
 #endif
-    bool ReceiveStarted() { return rxstate == TXRECV && rxfill > 0; }
+    bool ReceiveStarted();
 };
 
 #endif

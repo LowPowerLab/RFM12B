@@ -303,6 +303,10 @@ void RFM12B::ReceiveStart() {
   XFER(RF_RECEIVER_ON);
 }
 
+bool RFM12B::ReceiveStarted() {
+  return rxstate == TXRECV && rxfill > (&rf12_hdr1 - rf12_buf) && (RF12_DESTID == 0 || RF12_DESTID == nodeID);
+}
+
 bool RFM12B::ReceiveComplete() {
 #if !defined(RF69_COMPAT)
   if (rxstate == TXRECV && (rxfill >= rf12_len + 6 || rxfill >= RF_MAX)) {
