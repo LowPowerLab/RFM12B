@@ -28,7 +28,7 @@ To find your Arduino folder go to File>Preferences in the Arduino IDE.
 <br/>
 See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques/arduino-libraries) on Arduino libraries.
 
-###Saple usage
+###Sample usage
 - [Sender](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Send/Send.ino)
 - [Receiver](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Receive/Receive.ino)
 - More examples in the [Examples folder](https://github.com/LowPowerLab/RFM12B/tree/master/Examples)
