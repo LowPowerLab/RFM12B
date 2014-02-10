@@ -61,7 +61,11 @@
 #define RF12_SOURCEID (rf12_hdr2 & RF12_HDR_IDMASK)
 
 // shorthands to simplify sending out the proper ACK when requested
+#if !defined(RF69_COMPAT)
 #define RF12_WANTS_ACK ((rf12_hdr2 & RF12_HDR_ACKCTLMASK) && !(rf12_hdr1 & RF12_HDR_ACKCTLMASK))
+#else
+#define RF12_WANTS_ACK ((rf12_hdr3 & 0x40) && !(rf12_hdr1 & 0x80))
+#endif
 
 // options for RF12_sleep()
 #define RF12_SLEEP   0

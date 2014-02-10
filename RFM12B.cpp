@@ -357,7 +357,7 @@ void RFM12B::SendStart(uint8_t toNodeID, bool requestACK, bool sendACK) {
 #else
   rf12_hdr1 = toNodeID;
   rf12_hdr2 = nodeID;
-  rf12_hdr3 = (sendACK ? 0x40 : 0) | (requestACK ? 0x80 : 0);
+  rf12_hdr3 = (sendACK ? 0x80 : 0) | (requestACK ? 0x40 : 0);
   if (crypter != 0) crypter(true);
   rf12_crc = 0x1d0f;
 #endif
@@ -445,11 +445,11 @@ bool RFM12B::ACKReceived(uint8_t fromNodeID) {
            RF12_DESTID == nodeID &&
           (RF12_SOURCEID == fromNodeID || fromNodeID == 0) &&
 #if !defined(RF69_COMPAT)
-          (rf12_hdr3 & 0x40) &&
-          !(rf12_hdr3 & 0x80);
-#else
           (rf12_hdr1 & RF12_HDR_ACKCTLMASK) &&
           !(rf12_hdr2 & RF12_HDR_ACKCTLMASK);
+#else
+          (rf12_hdr3 & 0x80) &&
+          !(rf12_hdr3 & 0x40);
 #endif
   return false;
 }
