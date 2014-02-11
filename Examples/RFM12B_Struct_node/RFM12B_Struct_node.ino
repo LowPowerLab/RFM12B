@@ -87,7 +87,7 @@ void loop() {
     if (radio.CRCPass())
     {
       Serial.print('[');Serial.print(radio.GetSender(), DEC);Serial.print("] ");
-      for (byte i = 0; i < *radio.GetDataLen(); i++)
+      for (byte i = 0; i < radio.GetDataLen(); i++)
         Serial.print((char)radio.GetData()[i]);
 
       if (radio.ACKRequested())
