@@ -38,8 +38,8 @@ void loop()
     {
       digitalWrite(9,1);
       Serial.print('[');Serial.print(radio.GetSender(), DEC);Serial.print("] ");
-      for (byte i = 0; i < *radio.DataLen; i++)
-        Serial.print((char)radio.Data[i]);
+      for (byte i = 0; i < radio.GetDataLen(); i++)
+        Serial.print((char)radio.GetData()[i]);
 
       if (radio.ACKRequested())
       {
@@ -67,9 +67,9 @@ void loop()
 // wait a few milliseconds for proper ACK to me, return true if indeed received
 static bool waitForAck(byte theNodeID) {
   long now = millis();
-  while (millis() - now <= ACK_TIME) {
+  do {
     if (radio.ACKReceived(theNodeID))
       return true;
-  }
+  } while (millis() - now <= ACK_TIME);
   return false;
 }

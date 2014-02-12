@@ -81,8 +81,10 @@ void loop()
 // wait a few milliseconds for proper ACK, return true if received
 static bool waitForAck() {
   long now = millis();
-  while (millis() - now <= ACK_TIME)
+  do
+  {
     if (radio.ACKReceived(GATEWAYID))
       return true;
+  } while (millis() - now <= ACK_TIME);
   return false;
 }

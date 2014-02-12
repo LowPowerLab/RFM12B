@@ -138,9 +138,9 @@ void Blink(byte PIN, int DELAY_MS)
 // wait a few milliseconds for proper ACK to me, return true if indeed received
 static bool waitForAck(byte theNodeID) {
   long now = millis();
-  while (millis() - now <= ACK_TIME) {
+  do {
     if (radio.ACKReceived(theNodeID))
       return true;
-  }
+  } while (millis() - now <= ACK_TIME);
   return false;
 }
