@@ -87,8 +87,8 @@ void loop(){
   {
     if (radio.CRCPass())
     {
-      for (byte i = 0; i < *radio.DataLen; i++)
-        Serial.print((char)radio.Data[i]);
+      for (byte i = 0; i < radio.GetDataLen(); i++)
+        Serial.print((char)radio.GetData()[i]);
       
       if (radio.ACKRequested())
       {
