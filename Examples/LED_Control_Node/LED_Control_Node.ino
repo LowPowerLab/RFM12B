@@ -20,8 +20,8 @@
 // The target Moteino receives the message and applies the requested LED mode and speed
 
 #include <RFM12B.h>
-#include <avr\sleep.h>
-#include <avr\delay.h>
+#include <avr/sleep.h>
+#include <avr/delay.h>
 #include <LowPower.h>
 
 #define NETWORKID         100  //what network this node is on
