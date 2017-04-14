@@ -6,7 +6,7 @@ Based on the RFM12 driver from jeelabs.com (2009-02-09 <jc@wippler.nl>)
 <br/>
 http://opensource.org/licenses/mit-license.php
 
-###Features:
+### Features:
 - easy API with a few simple functions for basic usage
 - 127 possible nodes on 256 possible networks
 - 128 bytes max message length
@@ -21,20 +21,20 @@ Support for these chips: ATMega8 family (ATmega168, ATMega328) ATMega2560, ATMeg
 - wireless programming (for more info click [here](http://lowpowerlab.com/blog/2013/04/18/moteino-wireless-programming-source-code/), [here](http://lowpowerlab.com/?p=643) and [here](http://lowpowerlab.com/?p=669))
 - the library needed for wireless programming is now [here](https://github.com/LowPowerLab/WirelessProgramming), install it in your Arduino/libraries folder (WirelessHEX for RFM12B)
 
-###Installation
+### Installation
 Copy the content of this library in the "Arduino/libraries/RFM12B" folder.
 <br />
 To find your Arduino folder go to File>Preferences in the Arduino IDE.
 <br/>
 See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques/arduino-libraries) on Arduino libraries.
 
-###Saple usage
+### Saple usage
 - [Sender](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Send/Send.ino)
 - [Receiver](https://github.com/LowPowerLab/RFM12B/blob/master/Examples/Receive/Receive.ino)
 - More examples in the [Examples folder](https://github.com/LowPowerLab/RFM12B/tree/master/Examples)
 
 
-###TODOs (in order of priority):
+### TODOs (in order of priority):
 - Support automatic ACK handling
 - Refactor changing the SPI CS signal
 - Add support for hosting multiple radios on 1 MCU
