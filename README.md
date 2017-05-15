@@ -1,3 +1,8 @@
+changed by MikeTranch:
+made SetCS private (deprecated)
+added new Initialize() with new aurgument added to end, C, default 10
+
+
 RFM12B Library
 ----------------
 By Felix Rusu (felix@lowpowerlab.com)
