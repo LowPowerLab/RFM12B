@@ -1,0 +1,12 @@
+{
+  "name": "RFM12B",
+  "keywords": "rf, radio, wireless, spi",
+  "description": "RFM12B Universal ISM Band FSK Transceiver (433, 868 and 915 MHz bands)",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/LowPowerLab/RFM12B.git"
+  },
+  "frameworks": "arduino",
+  "platforms": "atmelavr"
+}
