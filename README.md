@@ -1,3 +1,7 @@
+NOTE: not actively maintained
+----------------
+#### This library is not actively maintained anymore but is kept for reference and can still be used with RFM12b transceivers.
+
 RFM12B Library
 ----------------
 By Felix Rusu (felix@lowpowerlab.com)
