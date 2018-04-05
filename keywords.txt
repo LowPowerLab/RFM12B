@@ -10,11 +10,12 @@
 # Methods and Functions (KEYWORD2)
 #######################################
 Initialize  KEYWORD2
-SetCS	KEYWORD2
+SetCS  KEYWORD2
 Control	KEYWORD2
 ReceiveStart	KEYWORD2
 ReceiveComplete	KEYWORD2
 CanSend	KEYWORD2
+ClearToSend	KEYWORD2
 SendStart	KEYWORD2
 SendACK	KEYWORD2
 SendWait	KEYWORD2
@@ -26,6 +27,7 @@ LowBattery	KEYWORD2
 CryptFunction	KEYWORD2
 Encrypt	KEYWORD2
 CRCPass	KEYWORD2
+ReceiveCallBack	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
