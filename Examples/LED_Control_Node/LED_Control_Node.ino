@@ -81,16 +81,16 @@ void loop()
     if (radio.CRCPass())
     {
       Serial.print('[');Serial.print(radio.GetSender(), DEC);Serial.print("] ");
-      for (byte i = 0; i < *radio.DataLen; i++)
-        Serial.print((char)radio.Data[i]);
+      for (byte i = 0; i < radio.GetDataLen(); i++)
+        Serial.print((char)radio.GetData()[i]);
 
       Serial.print(" - ");
       //check for a LED blink/pulse/stop request
-      if (*radio.DataLen == 3
-          && (radio.Data[0]=='b' || radio.Data[0]=='p' || radio.Data[0]=='o')
-          &&  radio.Data[1] == ':'
-          && (radio.Data[2]=='s' || radio.Data[2]=='m' || radio.Data[2]=='f'))
-        handleRequest(radio.Data[0], radio.Data[2]);
+      if (radio.GetDataLen() == 3
+          && (radio.GetData()[0]=='b' || radio.GetData()[0]=='p' || radio.GetData()[0]=='o')
+          &&  radio.GetData()[1] == ':'
+          && (radio.GetData()[2]=='s' || radio.GetData()[2]=='m' || radio.GetData()[2]=='f'))
+        handleRequest(radio.GetData()[0], radio.GetData()[2]);
 
       if (radio.ACKRequested())
       {

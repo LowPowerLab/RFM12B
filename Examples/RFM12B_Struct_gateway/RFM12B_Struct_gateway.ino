@@ -75,11 +75,11 @@ void loop() {
     {
       Serial.print('[');Serial.print(radio.GetSender(), DEC);Serial.print("] ");
 
-      if (*radio.DataLen != sizeof(Payload))
+      if (radio.GetDataLen() != sizeof(Payload))
         Serial.print("Invalid payload received, not matching Payload struct!");
       else
       {
-        theData = *(Payload*)radio.Data; //assume radio.DATA actually contains our struct and not something else
+        theData = *(Payload*)radio.GetData(); //assume radio.DATA actually contains our struct and not something else
         Serial.print(" nodeId=");
         Serial.print(theData.nodeId);
         Serial.print(" uptime=");
@@ -119,9 +119,9 @@ void Blink(byte PIN, int DELAY_MS)
 // wait a few milliseconds for proper ACK to me, return true if indeed received
 static bool waitForAck(byte theNodeID) {
   long now = millis();
-  while (millis() - now <= ACK_TIME) {
+  do {
     if (radio.ACKReceived(theNodeID))
       return true;
-  }
+  } while (millis() - now <= ACK_TIME);
   return false;
 }

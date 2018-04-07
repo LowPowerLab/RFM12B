@@ -6,6 +6,9 @@
 #ifndef RFM12B_h
 #define RFM12B_h
 
+#define RF69_COMPAT 1
+#define DISABLE_RSSI_CHECK  0
+
 #include <inttypes.h>
 #include <avr/io.h>
 #include <util/crc16.h>
@@ -58,11 +61,17 @@
 #define RF12_SOURCEID (rf12_hdr2 & RF12_HDR_IDMASK)
 
 // shorthands to simplify sending out the proper ACK when requested
+#if !defined(RF69_COMPAT)
 #define RF12_WANTS_ACK ((rf12_hdr2 & RF12_HDR_ACKCTLMASK) && !(rf12_hdr1 & RF12_HDR_ACKCTLMASK))
+#else
+#define RF12_WANTS_ACK ((rf12_hdr3 & 0x40) && !(rf12_hdr1 & 0x80))
+#endif
 
 // options for RF12_sleep()
 #define RF12_SLEEP   0
 #define RF12_WAKEUP -1
+
+#if !defined(RF69_COMPAT)
 
 /// Shorthand for RF12 group byte in rf12_buf.
 #define rf12_grp        rf12_buf[0]
@@ -75,6 +84,22 @@
 #define rf12_len        rf12_buf[3]
 /// Shorthand for first RF12 data byte in rf12_buf.
 #define rf12_data       (rf12_buf + 4)
+#else
+/// Shorthand for RF12 group byte in rf12_buf.
+#define rf12_grp        rf12_buf[0]
+/// pointer to 1st header byte in rf12_buf (DESTINATIONID)
+#define rf12_hdr1        rf12_buf[2]
+/// pointer to 2nd header byte in rf12_buf (SOURCEID)
+#define rf12_hdr2        rf12_buf[3]
+/// pointer to 3rd header byte in rf12_bug (CTL + ACK)
+#define rf12_hdr3        rf12_buf[4]
+
+/// Shorthand for RF12 length byte in rf12_buf
+#define rf12_len        rf12_buf[1]
+/// Shorthand for first RF12 data byte in rf12_buf.
+#define rf12_data       (rf12_buf + 5)
+
+#endif
 
 
 // pin change interrupts are currently only supported on ATmega328's
@@ -175,21 +200,28 @@ class RFM12B
   static void XFER(uint16_t cmd);
   
   void SPIInit();
+
+#if defined(RF69_COMPAT)
+  volatile uint8_t* Data;
+  volatile uint8_t* DataLen;
+#endif
   
 	public:
     //constructor
-    RFM12B():Data(rf12_data),DataLen(&rf12_buf[3]){}
+    RFM12B():Data(rf12_data),DataLen(&rf12_len){}
 
     static uint8_t networkID;         // network group
     static uint8_t nodeID;            // address of this node
     static const byte DATAMAXLEN;
+#if !defined(RF69_COMPAT) //don't hold the same values in COMPAT mode, so use the accessor functions
     volatile uint8_t* Data;
     volatile uint8_t* DataLen;
+#endif
     
     static void InterruptHandler();
     
     //Defaults: Group: 0xAA=170, transmit power: 0(max), KBPS: 38.3Kbps (air transmission baud - has to be same on all radios in same group)
-  	void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x08, uint8_t lowVoltageThreshold=RF12_2v75);
+  	void Initialize(uint8_t nodeid, uint8_t freqBand, uint8_t groupid=0xAA, uint8_t txPower=0, uint8_t airKbps=0x7F, uint8_t lowVoltageThreshold=RF12_2v75);
     void SetCS(uint8_t pin);
     void ReceiveStart();
     bool ReceiveComplete();
@@ -215,7 +247,12 @@ class RFM12B
     bool ACKReceived(uint8_t fromNodeID=0);
     static void CryptFunction(bool sending);
     void Encrypt(const uint8_t* key, uint8_t keyLen = 16);
+#if !defined(RF69_COMPAT)
     bool CRCPass() { return rf12_crc == 0; }
+#else
+    bool CRCPass() { return rf12_crc == 0x1d0f; }
+#endif
+    bool ReceiveStarted();
 };
 
 #endif

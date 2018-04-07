@@ -113,10 +113,10 @@ void loop(){
     if (radio.CRCPass())
     {
       Serial.print("Got [");
-      Serial.print(*radio.DataLen);
+      Serial.print(radio.GetDataLen());
       Serial.print("] > ");
-      for (byte i = 0; i < *radio.DataLen; i++)
-        Serial.print((char)radio.Data[i], HEX);
+      for (byte i = 0; i < radio.GetDataLen(); i++)
+        Serial.print((char)radio.GetData()[i], HEX);
       Serial.println();
       
       CheckForWirelessHEX(radio, flash, true);
