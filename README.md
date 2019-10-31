@@ -39,6 +39,6 @@ See [this tutorial](http://learn.adafruit.com/arduino-tips-tricks-and-techniques
 
 
 ### TODOs (in order of priority):
-- Support automatic ACK handling
-- Refactor changing the SPI CS signal
-- Add support for hosting multiple radios on 1 MCU
+- Support automatic ACK handling.
+- Refactor changing the SPI CS signal.
+- Add support for hosting multiple radios on 1 MCU.
